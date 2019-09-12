@@ -21,12 +21,10 @@ body {
 #input {
   font-size: 20px;
   border: none;
-  height: 25px;
+  height: 30px;
   width: 500px;
   border-radius: 5px;
-  overflow: hidden;
   font-weight: 300;
-  resize: none;
   background-color: rgb(53, 59, 69);
   color: rgb(230, 230, 230);
 }
@@ -46,7 +44,8 @@ h2 {
   letter-spacing: 0.01em;
 }
 button:hover {
-  background-color: white;
+  background-color: rgb(130, 240, 255);
+  cursor: pointer;
 }
 button {
   border: none;
@@ -68,4 +67,28 @@ button {
   text-decoration: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+.lds-dual-ring {
+  width: 20px;
+  height: 20px;
+}
+.lds-dual-ring:after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

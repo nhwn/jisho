@@ -1,17 +1,17 @@
 async function main() {
   let quizlet = null;
   const inputElement = document.getElementById('input');
+  const buttonElement = document.getElementById('download');
+  buttonElement.innerHTML = '<i class="lds-dual-ring"></i>';
+  buttonElement.disabled = true;
+  // await new Promise(resolve => setTimeout(resolve, 1000));
   const inputValue = inputElement.value;
-  function setMessage(message) {
-    inputElement.setAttribute('placeholder', message);
-    inputElement.value = '';
-  }
-  if (inputValue.match(/^https?:\/\/quizlet\.com\/\d+/)) {
+  if (inputValue.match(/^(https?:\/\/)?quizlet\.com.*\d+/)) {
     // it's probably a url
     try {
       quizlet = await getQuizletFromAPI(inputValue);
     } catch {
-      setMessage("Couldn't fetch URL; try HTML method instead");
+      setMessage("Couldn't fetch URL; try pasting the source HTML instead");
       return;
     }
   } else if (inputValue.match(/^</)) {
@@ -24,6 +24,8 @@ async function main() {
     }
   } else {
     if (inputValue === '') {
+      buttonElement.innerHTML = 'Download';
+      buttonElement.disabled = false;
       return;
     }
     setMessage('Dunno what you typed in, try again');
@@ -42,58 +44,63 @@ async function main() {
   } else {
     setMessage("Couldn't construct Quizlet object");
   }
-}
-async function getQuizletFromAPI(url) {
-  const id = url.match(/\d+/)[0];
-  const response = await fetch(`https://quizlet-api.herokuapp.com/${id}`);
-  const data = await response.json();
-  return data;
-}
-function isValidQuizlet(quizlet) {
-  return (
-    quizlet &&
-    typeof quizlet !== 'undefined' &&
-    quizlet.hasOwnProperty('author') &&
-    typeof quizlet.author === 'string' &&
-    quizlet.hasOwnProperty('title') &&
-    typeof quizlet.title === 'string' &&
-    quizlet.hasOwnProperty('terms') &&
-    typeof quizlet.terms === 'object'
-  );
-}
-function getQuizletFromHTML(html) {
-  const domparser = new DOMParser();
-  const doc = domparser.parseFromString(html, 'text/html');
-  const title = doc.querySelector(
-    '#SetPageTarget > div > div.SetPage-setIntroWrapper > div > div > div.SetPage-setTitle > h1'
-  ).innerText;
-  const author = doc.querySelector(
-    '#SetPageTarget > div > div.SetPage-setDetails > div.SetPage-setDetailsInfoWrapper > div > div > section > div > div > div > div > aside > div > div > div > div > div.UserLink-content > a > span'
-  ).innerText;
-  const terms = Array.from(doc.querySelectorAll('.SetPageTerm-wordText')).map(
-    element => element.childNodes[0].innerText
-  );
-  const definitions = Array.from(
-    doc.querySelectorAll('.SetPageTerm-definitionText')
-  ).map(element => element.childNodes[0].innerText);
+  function setMessage(message) {
+    inputElement.setAttribute('placeholder', message);
+    inputElement.value = '';
+    buttonElement.disabled = false;
+    buttonElement.innerHTML = 'Download';
+  }
+  async function getQuizletFromAPI(url) {
+    const id = url.match(/\d+/)[0];
+    const response = await fetch(`https://quizlet-api.herokuapp.com/${id}`);
+    const data = await response.json();
+    return data;
+  }
+  function isValidQuizlet(quizlet) {
+    return (
+      quizlet &&
+      typeof quizlet !== 'undefined' &&
+      quizlet.hasOwnProperty('author') &&
+      typeof quizlet.author === 'string' &&
+      quizlet.hasOwnProperty('title') &&
+      typeof quizlet.title === 'string' &&
+      quizlet.hasOwnProperty('terms') &&
+      typeof quizlet.terms === 'object'
+    );
+  }
+  function getQuizletFromHTML(html) {
+    const domparser = new DOMParser();
+    const doc = domparser.parseFromString(html, 'text/html');
+    const title = doc.querySelector(
+      '#SetPageTarget > div > div.SetPage-setIntroWrapper > div > div > div.SetPage-setTitle > h1'
+    ).innerText;
+    const author = doc.querySelector(
+      '#SetPageTarget > div > div.SetPage-setDetails > div.SetPage-setDetailsInfoWrapper > div > div > section > div > div > div > div > aside > div > div > div > div > div.UserLink-content > a > span'
+    ).innerText;
+    const terms = Array.from(doc.querySelectorAll('.SetPageTerm-wordText')).map(
+      element => element.childNodes[0].innerText
+    );
+    const definitions = Array.from(
+      doc.querySelectorAll('.SetPageTerm-definitionText')
+    ).map(element => element.childNodes[0].innerText);
 
-  return {
-    title: title,
-    author: author,
-    terms: Object.assign(
-      ...terms.map((term, i) => ({ [term]: definitions[i] }))
-    ),
-  };
-}
-function createLuaScript(terms) {
-  const entries = Object.entries(terms).reduce(
-    (acc, entry) =>
-      `${acc}    [${JSON.stringify(entry[0])}] = ${JSON.stringify(
-        entry[1]
-      )},\n`,
-    '\n'
-  );
-  return `platform.apilevel = "2.5"
+    return {
+      title: title,
+      author: author,
+      terms: Object.assign(
+        ...terms.map((term, i) => ({ [term]: definitions[i] }))
+      ),
+    };
+  }
+  function createLuaScript(terms) {
+    const entries = Object.entries(terms).reduce(
+      (acc, entry) =>
+        `${acc}    [${JSON.stringify(entry[0])}] = ${JSON.stringify(
+          entry[1]
+        )},\n`,
+      '\n'
+    );
+    return `platform.apilevel = "2.5"
   local auto = true
   local searchBoth = false
   local viewingDefinition = false
@@ -254,4 +261,5 @@ function createLuaScript(terms) {
           results:setText("")
       end
   end`;
+  }
 }
