@@ -4,7 +4,6 @@ async function main() {
   const buttonElement = document.getElementById('download');
   buttonElement.innerHTML = '<i class="lds-dual-ring"></i>';
   buttonElement.disabled = true;
-  // await new Promise(resolve => setTimeout(resolve, 1000));
   const inputValue = inputElement.value;
   if (inputValue.match(/^(https?:\/\/)?quizlet\.com.*\d+/)) {
     // it's probably a url
