@@ -1,264 +1,104 @@
-async function main() {
-  let quizlet = null;
-  const inputElement = document.getElementById('input');
-  const buttonElement = document.getElementById('download');
-  buttonElement.innerHTML = '<i class="lds-dual-ring"></i>';
-  buttonElement.disabled = true;
-  const inputValue = inputElement.value;
-  if (inputValue.match(/^(https?:\/\/)?quizlet\.com.*\d+/)) {
-    // it's probably a url
-    try {
-      quizlet = await getQuizletFromAPI(inputValue);
-    } catch {
-      setMessage("Couldn't fetch URL; try pasting the source HTML instead");
-      return;
-    }
-  } else if (inputValue.match(/^</)) {
-    // it's probably HTML
-    try {
-      quizlet = getQuizletFromHTML(inputValue);
-    } catch {
-      setMessage("Couldn't parse HTML; make sure it's unaltered");
-      return;
-    }
-  } else {
-    if (inputValue === '') {
-      buttonElement.innerHTML = 'Download';
-      buttonElement.disabled = false;
-      return;
-    }
-    setMessage('Dunno what you typed in, try again');
-    return;
-  }
-  if (isValidQuizlet(quizlet)) {
-    setMessage('Paste your Quizlet link or HTML source code here');
-    const luaScript = createLuaScript(quizlet.terms);
-    const filename = `${quizlet.author} - ${quizlet.title}.tns`;
+function zipToObject(a, b) {
+    let c = {};
+    a.forEach((e, i) => {
+        c[e] = b[i];
+    }) 
+    return c;
+}
+function downloadTNS(script) {
     saveAs(
-      new Blob([luna.createTNS(luaScript)], {
-        type: 'application/octet-stream',
-      }),
-      filename
+        new Blob([luna.createTNS(script)], {
+            type: 'application/octet-stream',
+        }),
+        'script.tns'
     );
-  } else {
-    setMessage("Couldn't construct Quizlet object");
-  }
-  function setMessage(message) {
-    inputElement.setAttribute('placeholder', message);
-    inputElement.value = '';
-    buttonElement.disabled = false;
-    buttonElement.innerHTML = 'Download';
-  }
-  async function getQuizletFromAPI(url) {
-    const id = url.match(/\d+/)[0];
-    const response = await fetch(`https://quizlet-api.herokuapp.com/${id}`);
-    const data = await response.json();
-    return data;
-  }
-  function isValidQuizlet(quizlet) {
-    return (
-      quizlet &&
-      typeof quizlet !== 'undefined' &&
-      quizlet.hasOwnProperty('author') &&
-      typeof quizlet.author === 'string' &&
-      quizlet.hasOwnProperty('title') &&
-      typeof quizlet.title === 'string' &&
-      quizlet.hasOwnProperty('terms') &&
-      typeof quizlet.terms === 'object'
-    );
-  }
-  function getQuizletFromHTML(html) {
+}
+function clearEntries() {
+    document.querySelectorAll('.entry').forEach(entry => {
+        entry.remove();
+    });
+}
+function createResizingTextArea() {
+    let textarea = document.createElement('textarea');
+    textarea.setAttribute('rows', 1);
+    let offset = textarea.offsetHeight - textarea.clientHeight;
+    textarea.addEventListener('input', function(event) {
+        event.target.style.height = 'auto';
+        event.target.style.height = event.target.scrollHeight + offset + 'px';
+    });
+    return textarea;
+}
+function sortObject(object) {
+    return Object.keys(object).sort().reduce((a, c) => (a[c] = object[c], a), {})
+}
+
+function createEntry() {
+    let entry = document.createElement('div');
+    let termInput = createResizingTextArea();
+    let definitionInput = createResizingTextArea();
+    let deleteEntryButton = document.createElement('button');
+    let separator = document.createElement('div');
+
+    entry.setAttribute('class', 'entry')
+
+    termInput.setAttribute('class', 'term')
+    termInput.setAttribute('placeholder', 'term')
+    definitionInput.setAttribute('placeholder', 'definition')
+    definitionInput.onblur = function() {
+    }
+    definitionInput.setAttribute('class', 'definition')
+    deleteEntryButton.onclick = function() {
+        entry.remove();
+    }
+    deleteEntryButton.innerHTML = 'Delete entry'
+    separator.setAttribute('class', 'separator')
+
+    entry.appendChild(termInput);
+    entry.appendChild(separator)
+    entry.appendChild(definitionInput);
+    entry.appendChild(deleteEntryButton);
+
+    return entry;
+}
+function test() {
+    let dictionary = readEntries();
+    let script = createLuaScript(dictionary);
+    downloadTNS(script);
+}
+function addEntry() {
+    let entry = createEntry();
+    document.getElementById('entries').appendChild(entry);
+}
+function readEntries() {
+    let terms = Array.from(document.querySelectorAll('.term'))
+        .map(node => node.value);
+    let definitions = Array.from(document.querySelectorAll('.definition'))
+        .map(node => node.value);
+    return zipToObject(terms, definitions);
+}
+function populateEntries(inputObject) {
+    let frag = document.createDocumentFragment();
+    for (const [key, value] of Object.entries(inputObject)) {
+        let entry = createEntry();
+        entry.children[0].value = key;
+        entry.children[2].value = value;
+        frag.appendChild(entry);
+    }
+    document.getElementById('entries')
+        .insertBefore(frag, document.getElementById('add'));
+}
+function parseQuizletHTML(html) {
     const domparser = new DOMParser();
     const doc = domparser.parseFromString(html, 'text/html');
-    const title = doc.querySelector(
-      '#SetPageTarget > div > div.SetPage-setIntroWrapper > div > div > div.SetPage-setTitle > h1'
-    ).innerText;
-    const author = doc.querySelector(
-      '#SetPageTarget > div > div.SetPage-setDetails > div.SetPage-setDetailsInfoWrapper > div > div > section > div > div > div > div > aside > div > div > div > div > div.UserLink-content > a > span'
-    ).innerText;
-    const terms = Array.from(doc.querySelectorAll('.SetPageTerm-wordText')).map(
-      element => element.childNodes[0].innerText
-    );
-    const definitions = Array.from(
-      doc.querySelectorAll('.SetPageTerm-definitionText')
-    ).map(element => element.childNodes[0].innerText);
-
-    return {
-      title: title,
-      author: author,
-      terms: Object.assign(
-        ...terms.map((term, i) => ({ [term]: definitions[i] }))
-      ),
-    };
-  }
-  function createLuaScript(terms) {
-    const entries = Object.entries(terms).reduce(
-      (acc, entry) =>
-        `${acc}    [${JSON.stringify(entry[0])}] = ${JSON.stringify(
-          entry[1]
-        )},\n`,
-      '\n'
-    );
-    return `platform.apilevel = "2.5"
-  local auto = true
-  local searchBoth = false
-  local viewingDefinition = false
-  local searchBar = D2Editor.newRichText()
-  local results = D2Editor.newRichText()
-  local entries = {${entries}
-  }
-  local matches = {}
-  local tracker = {}
-  local payload = ""
-  local cursor = 0
-  local width = 0
-  local height = 0
-
-  menu = {
-      {"Search Options:",
-          {"Auto Search", function() auto = true end},
-          {"Manual Search", function() auto = false end},
-          {"Term Search", function() termsOnly = true end},
-          {"Term and Def Search", function() searchBoth = true end},
-      },
-      {"Font Sizes:",
-              {"Size 9", function() results:setFontSize(9) end},
-              {"Size 12", function() results:setFontSize(12) end},
-              {"Size 16", function() results:setFontSize(16) end},
-      }
-  }
-  toolpalette.register(menu)
-  function trim(s)
-     return (s:gsub("^%s*(.-)%s*$", "%1"))
-  end
-  function pairsByKeys (t, f)
-      local a = {}
-      for n in pairs(t) do table.insert(a, n) end
-      table.sort(a, f)
-      local i = 0
-      local iter = function ()
-          i = i + 1
-          if a[i] == nil then return nil
-              else return a[i], t[a[i]]
-          end
-      end
-      return iter
-  end
-  function on.resize()
-      width = platform.window:width()
-      height = platform.window:height()
-      searchBar:move(width - width * 0.985, height - height * 0.97):
-      resize(width * 0.975, height * 0.11):
-      setFocus():setExpression("", 0, 0):
-      setMainFont("sansserif","r"):
-      setFontSize(9):
-      setTextChangeListener(function() if auto then main() end end):
-      setFocus():
-      registerFilter {
-          enterKey = function()
-              if not auto then
-                  main()
-              end
-              results:setFocus()
-              return true
-          end,
-          arrowDown = function()
-              if not auto then
-                  main()
-              end
-              results:setFocus()
-              return true
-          end
-      }
-      results:move(width - width * 0.985, height - height * 0.83):
-      resize(width * 0.975, height * 0.81):setText(""):
-      setMainFont("sansserif","r"):
-      setFontSize(7):
-      setReadOnly():
-      registerFilter {
-          enterKey = function()
-              if not viewingDefinition and results:getText() ~= nil and matches ~= nil then
-                  _, cursor, _ = results:getExpressionSelection()
-                  local lower = 0
-                  for i = 1, #tracker do
-                      if cursor >= lower and cursor <= tracker[i] then
-                          if (entries[matches[i]] ~= nil) then
-                              results:setExpression(entries[matches[i]], 0, 0)
-                          else
-                               results:setText("No definition available!")
-                          end
-                          viewingDefinition = true
-                      end
-                      lower = tracker[i] + 1
-                  end
-              end
-              return true
-          end,
-          escapeKey = function()
-              if viewingDefinition then
-                  results:setExpression(payload, cursor, cursor)
-                  viewingDefinition = false
-              else
-                  searchBar:setFocus()
-              end
-              return true
-          end
-      }
-  end
-  function on.paint(gc)
-      gc:drawRect(width - width * 0.99, height - height * 0.98, width * 0.98, height * 0.12)
-      gc:drawRect(width - width * 0.99, height - height * 0.835, width * 0.98, height * 0.82)
-  end
-  function getQuery()
-      local text = searchBar:getText()
-      if text ~= nil then
-          text = trim(text)
-          if text ~= "" and not text:find('%', 1, true) then
-              return text
-          else
-              return nil
-          end
-      else
-          return nil
-      end
-  end
-  function search(query)
-      matches = {}
-      local k = 1
-      for term, def in pairsByKeys(entries) do
-          if searchBoth then
-              if query == "." or term:lower():find(query:lower()) or def:lower():find(query:lower()) then
-                  matches[k] = term
-                  k = k + 1
-              end
-          elseif query == "." or term:lower():find(query:lower()) then
-              matches[k] = term
-              k = k + 1
-          end
-      end
-  end
-  function populateResults(matches)
-      if #matches == 0 then
-         results:setText("")
-         return
-      end
-      payload = ""
-      for i = 1, #matches do
-          payload = payload..matches[i].."\\n"
-          tracker[i] = payload:len() - 1
-      end
-      payload = trim(payload)
-      results:setExpression(payload, tracker[1], tracker[1])
-  end
-  function main()
-      print(searchBoth)
-      local query = getQuery()
-      if query ~= nil then
-          search(query)
-          populateResults(matches)
-      else
-          results:setText("")
-      end
-  end`;
-  }
+    const terms = Array.from(doc.querySelectorAll('.SetPageTerm-wordText'))
+        .map( element => element.childNodes[0].innerText);
+    const definitions = Array.from( doc.querySelectorAll('.SetPageTerm-definitionText'))
+        .map(element => element.childNodes[0].innerText);
+    return zipToObject(terms, definitions);
+}
+function createLuaScript(dictionary) {
+    dictionary = sortObject(dictionary);
+    let terms = Object.keys(dictionary).map(key => JSON.stringify(key.trim())).join(',');
+    let defs = Object.values(dictionary).map(value => JSON.stringify(value.trim())).join(',');
+    return String.raw`platform.apilevel="2.5"local a=true;local b=true;local c=D2Editor.newRichText()local d=D2Editor.newRichText()local e={${terms}}local f={${defs}}local g={}local h={-1}local i=""local j=0;local k=0;local l=false;toolpalette.register{{"Search Options",{"Auto",function()a=true end},{"Manual",function()a=false end},{"Term Only",function()b=false end},{"Term and Def Search",function()b=true end}},{"Font Sizes",{"9",function()d:setFontSize(9)end},{"12",function()d:setFontSize(12)end},{"16",function()d:setFontSize(16)end},{"24",function()d:setFontSize(24)end}}}local function m()l=false;local n=c:getText()n=n==nil and""or n:match"^%s*(.-)%s*$"g={}for o=1,#e do if n==""or e[o]:lower():find(n:lower())or b and f[o]:lower():find(n:lower())then g[#g+1]=e[o]end end;i=""if next(g)==nil then d:setText(i)return end;i=table.concat(g,"\n")local p=0;for o=1,#g do p=p+g[o]:len()+1;h[o+1]=p-1 end;d:setExpression(i,h[2],h[2])end;function on.resize(q,r)local s=0;j=q;k=r;c:move(j*0.015,k*0.03):resize(j*0.975,k*0.11):setMainFont("sansserif","r",9):setTextChangeListener(function()if a then m()end end):setFocus():registerFilter{enterKey=function()if not a then m()end;d:setFocus()end}d:move(j*0.015,k*0.17):resize(j*0.975,k*0.81):setMainFont("sansserif","r",7):setReadOnly():registerFilter{enterKey=function()if not l and i~=""then _,s=d:getExpressionSelection()for o=1,#h do if s>=h[o]+1 and s<=h[o+1]then local t;for u=1,#e do if e[u]==g[o]then t=u;break end end;d:setExpression(f[t],0,0)l=true;return end end end end,escapeKey=function()if l then d:setExpression(i,s,s)l=false else c:setFocus()end end}m()end;function on.paint(v)v:drawRect(j*0.01,k*0.02,j*0.98,k*0.12)v:drawRect(j*0.01,k*0.165,j*0.98,k*0.82)end`
 }
