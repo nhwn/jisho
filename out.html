@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>website</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="jisho">Jisho</h1>
+<p>Jisho is a web-based tool for generating custom searchable dictionaries for the <a href="https://education.ti.com/en/products/calculators/graphing-calculators/ti-nspire-cx">TI-Nspire CX</a> calculator series. To learn how to use it, just keep scrolling down. If you want to jump right in to making your own dictionary, click <a href="#editor">here</a> to jump to the editor.</p>
+<video autoplay loop muted playsinline>
+<source src="assets/demo.webm" type="video/webm">
+<source src="assets/demo.mp4" type="video/mp4">
+</video>
+<h2 id="overview">Overview</h2>
+<p>Jisho is a great alternative to using the built-in notes or an external PDF viewer for quickly looking up textual information. Since it just produces a standalone .tns file, there’s no need for 3rd party software like <a href="http://ndless.me/">Ndless</a>. As long as the calculator’s operating system is 3.6 or higher, Jisho will work on any CX series calculator, including non-CAS, CAS, and CX II models. The minimum required operating system is fairly old, so you’re probably good to go. If you need to <a href="https://www.vernier.com/til/1725">check the version</a> or <a href="https://education.ti.com/en/software/update/ti-nspire-software-update">upgrade to a newer operating system</a>, click the provided links for further instructions.</p>
+<p>There are 2 parts to Jisho: a browser-based dictionary editor and an executable .tns file containing the actual dictionary. The process of making your own dictionaries is pretty straightforward:</p>
+<ol type="1">
+<li>Import or type your terms and definitions into the dictionary editor.</li>
+<li>Click the “Download .tns” button to download the executable .tns file.</li>
+<li>Plug your calculator into your computer with a mini-USB cable.</li>
+<li>Use TI’s <a href="https://education.ti.com/en/software/details/en/a78091cd540843d68ab8ee5853c84828/student-nspirecx">Student Software</a> or <a href="https://education.ti.com/en/products/computer-software/ti-nspire-computer-link">Computer Link</a> to send the .tns file to your calculator. <a href="https://www.dummies.com/education/graphing-calculators/how-to-send-and-receive-ti-nspire-files-or-folders/">Here’s</a> some instructions if you’re not sure how to do this.</li>
+<li>Open the .tns file on your calculator.</li>
+<li>Profit.</li>
+</ol>
+<p>The next sections provide more detailed information on how to use the editor and the dictionary.</p>
+<h2 id="using-the-dictionary">Using the dictionary</h2>
+<h3 id="basics">Basics</h3>
+<p>When you open the .tns file on your calculator, you’ll see two boxes. The top box is for entering the keywords you want to search for, and the lower box will display the matching results in alphabetical order. If the top box isn’t automatically focused on startup, use the trackpad mouse to click on it. As you type characters into the search box, the matching terms in the results box will be updated in real-time.</p>
+<ul>
+<li>To focus the results box, press <code>enter</code> while the search box is focused to move the cursor to the results box.</li>
+<li>To navigate the cursor around in the results box, press the arrow keys. You can keep scrolling down if there’s too many results to fit in one screen.</li>
+<li>To show the definition of the word under the cursor, press <code>enter</code>. Note that the horizontal position of the cursor doesn’t matter; only the row position matters.</li>
+<li>To navigate the cursor around in the results box, press the arrow keys. You can keep scrolling down if the definition is too long to fit in one screen.</li>
+<li>To stop viewing the definition of a word, press <code>esc</code>. This will take you back to the previous list of results. You can then navigate to another word using the arrow keys.</li>
+<li>To focus the search box, press <code>esc</code> while the results box is focused to move the cursor to the search box. You can then press <code>del</code> to make room for a new query.</li>
+<li>To quit the dictionary, press <code>doc</code>, select “File”, then select “Close”. When the calculator asks if you want to save your changes, select “No”.</li>
+</ul>
+<h3 id="extra-notes">Extra notes</h3>
+<ul>
+<li>An empty query will match all possible terms in the dictionary.</li>
+<li>The search will always be case-insensitive.</li>
+<li>Using the mouse to focus each box is discouraged. Use the keyboard shortcuts to get around.</li>
+<li>By default, both the terms and definitions will be searched. As a result, a term will match even if it doesn’t physically contain the query (as long as its corresponding definition does). You can disable this if you want (more on this below).</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<p>If you want to change the search behavior or font size, press the <code>menu</code> button on your calculator to bring up the configuration menu. Navigate to the option you want to change, then press <code>enter</code>. Changes will take place immediately.</p>
+<ul>
+<li>Search Options
+<ul>
+<li>Terms Only - Search only the list of terms to determine matching results.</li>
+<li>Terms and Defs (default) - Search both the list of terms and definitions to determine matching results.</li>
+</ul></li>
+<li>Font Sizes
+<ul>
+<li>9 (default) - Set the font size to 9.</li>
+<li>12 - Set the font size to 12.</li>
+<li>16 - Set the font size to 16.</li>
+<li>24 - Set the font size to 24.</li>
+</ul></li>
+</ul>
+<h2 id="using-the-editor">Using the editor</h2>
+<h3 id="basics-1">Basics</h3>
+<p>The dictionary editor displays a table of all the possible terms and definitions that will be used to create your dictionary.</p>
+<ul>
+<li>To change the value of an entry, just click on it, and start typing away.</li>
+<li>To add more rows, click the “Add Row” button.</li>
+<li>To delete a row, click its checkbox, then click the “Delete Selection” button.</li>
+<li>To delete all the rows, click the top left checkbox, then click the “Delete Selection” button.</li>
+<li>To download the .tns file, click the “Download .tns” button.</li>
+</ul>
+<h3 id="things-to-look-out-for">Things to look out for</h3>
+<ul>
+<li>If you have duplicate terms, the definition of the term with the highest number will be used.</li>
+<li>If you have any blank terms, their entry will be discarded during the creation of the .tns file.</li>
+<li>Line breaks are not added unless you actually press <code>Enter</code>; otherwise, it’s just a visual line break.</li>
+<li>The terms will be sorted in alphabetical order during the creation of the .tns file, so the order you see in the editor is not the order in the actual dictionary.</li>
+<li>The downloaded .tns file will always be named “jisho.tns”, so you should rename your files accordingly if you have multiple dictionaries.</li>
+<li>Calculator support for non-printable ASCII characters isn’t the greatest. I just got lucky with the kanji in the demo, so you might run into issues with displaying Unicode characters. As a workaround, type out the phonetic equivalent (e.g. write √ as sqrt). This will also make finding results easier since your search keywords will probably just consist of alphanumeric characters.</li>
+</ul>
+<h3 id="importing-from-quizlet">Importing from Quizlet</h3>
+<p>To import the flashcards from a Quizlet, click the “Import Quizlet” button. This will prompt you to paste in the HTML source code of the target Quizlet.</p>
+<p>If you’re not sure how to get the HTML source code of a website, here’s how you do it:</p>
+<ol type="1">
+<li>Right-click anywhere on the target page.</li>
+<li>Click the option that says “View Page Source” (this is for Chrome; the exact option may vary from browser to browser).</li>
+<li>Select and copy the entire region of text. You can use <code>Control-a</code> and <code>Control-c</code> to do this (use <code>Command</code> instead of <code>Control</code> if you’re on a Mac).</li>
+</ol>
+<p>After you’re done pasting, click “OK” to exit the prompt. If the entered HTML source code is successfully parsed, the new terms and definitions will be appended to the table. If there’s an error parsing the HTML, you may get an alert, but nothing will happen. Obviously, this is a text-driven tool, so don’t expect pictures from your Quizlet to show up.</p>
+<blockquote>
+<p>I’m aware that this is a very hacky way to do this. Quizlet makes web scraping fairly difficult, so I decided on a relatively more maintainable solution. On the bright side, you can use this technique to get the contents of your private Quizlets.</p>
+</blockquote>
+<h3 id="importing-from-json">Importing from JSON</h3>
+<p>To import raw JSON data, click the “Import JSON” button. This will prompt you to paste in the raw JSON you want to use. After you’re done pasting, click “OK” to exit the prompt. If the JSON is successfully parsed, the new terms and definitions will be appended to the table. If there’s an error, you may get an alert, but nothing will happen.</p>
+<p>The keys of the imported JSON data are treated as the new terms, and the values are treated as the definitions. Note that the values effectively get stringified, so pass in JSON that has strings for values.</p>
+<h2 id="issues">Issues</h2>
+<p>If you ever run into any issues, open up an issue <a href="https://github.com/nhwn/jisho/issues">here</a>. I’ll do my best to answer in a timely manner. Also, feedback and comments are welcome! If you like Jisho, consider leaving a star at the <a href="https://github.com/nhwn/jisho">GitHub repository</a>.</p>
+<p>If you want to mess with the source code, Jisho is distributed under the <a href="https://opensource.org/licenses/MIT">MIT</a> license, so feel free go ham. Implementation details can be found in the repository’s README if you’re curious.</p>
+<p>If you’re concerned about the “cheating” implications of using Jisho for tests like the AP exams, don’t worry about it; as of this writing, the College Board explicitly states that your calculator memory <a href="https://apstudents.collegeboard.org/exam-policies-guidelines/calculator-policies">doesn’t have to be cleared</a> before or after the exam. Plus, it’s not like Jisho is a free ticket to a perfect score. In practice, I find it to be most useful as an emergency crutch for recalling information that I might forget.</p>
+<p>That being said, I strongly discourage academic dishonesty, so please make sure you use Jisho responsibly.</p>
+<h2 id="editor">Editor</h2>
+<p style="margin: 0">
+This is the editor for creating your .tns files. The initial entries are just there as examples, so feel free to delete them. Remember, you can put whatever you want into your dictionary. The sky’s the limit!
+</p>
+</body>
+</html>

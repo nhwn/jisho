@@ -99,11 +99,11 @@ The keys of the imported JSON data are treated as the new terms, and the values 
 
 If you ever run into any issues, open up an issue [here](https://github.com/nhwn/jisho/issues). I'll do my best to answer in a timely manner. Also, feedback and comments are welcome! If you like Jisho, consider leaving a star at the [GitHub repository](https://github.com/nhwn/jisho).
 
-If you want to mess with the source code, Jisho is distributed under the [MIT](https://opensource.org/licenses/MIT) license, so feel free go ham. Implementation details can be found in the repository's README if you're curious. 
-
 If you're concerned about the "cheating" implications of using Jisho for tests like the AP exams, don't worry about it; as of this writing, the College Board explicitly states that your calculator memory [doesn't have to be cleared](https://apstudents.collegeboard.org/exam-policies-guidelines/calculator-policies) before or after the exam. Plus, it's not like Jisho is a free ticket to a perfect score. In practice, I find it to be most useful as an emergency crutch for recalling information that I might forget.
 
 That being said, I strongly discourage academic dishonesty, so please make sure you use Jisho responsibly. 
+
+If you want to mess with the source code, Jisho is distributed under the [MIT](https://opensource.org/licenses/MIT) license, so feel free go ham. Implementation details can be found in the repository's README if you're curious. 
 
 ## Editor
 <p style="margin: 0">
