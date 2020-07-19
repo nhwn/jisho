@@ -1,5 +1,9 @@
 // stuff that cares about the DOM
 
+const table = document.getElementById('entries');
+const rows = table.children;
+const toggle = document.getElementById('toggle');
+
 function createRow(initialIndex, term = '', definition = '') {
     const row = document.createElement('tr');
     const checkbox = document.createElement('input');
@@ -24,17 +28,14 @@ function createRow(initialIndex, term = '', definition = '') {
 }
 
 function appendRow() {
-    const entries = document.getElementById('entries');
-    const entry = createRow(entries.children.length);
-    entries.appendChild(entry);
+    const row = createRow(table.children.length);
+    table.appendChild(row);
 }
 
 function appendRows(terms, definitions) {
-    const table = document.getElementById('entries');
     const frag = document.createDocumentFragment();
-    const numCurrentRows = table.children.length;
     for (const [i, term] of terms.entries()) {
-        const row = createRow(i + numCurrentRows, term, definitions[i]);
+        const row = createRow(i + rows.length, term, definitions[i]);
         frag.appendChild(row);
     }
     table.appendChild(frag);
@@ -52,8 +53,6 @@ function readRows() {
 }
 
 function deleteSelectedRows() {
-    const table = document.getElementById('entries');
-    const rows = table.children;
     // raw loop access in reverse since length changes on removal
     for (let i = rows.length - 1; i >= 0; i--) {
         if (rows[i].firstChild.firstChild.checked) {
@@ -64,18 +63,16 @@ function deleteSelectedRows() {
     for (let i = 0; i < rows.length; i++) {
         rows[i].children[1].innerHTML = i + 1;
     }
-    document.getElementById('toggle').checked = false;
+    toggle.checked = false;
 }
 
 function toggleCheckboxes(checkboxNode) {
-    const table = document.getElementById('entries');
-    const rows = table.children;
     for (const row of rows) {
         row.firstChild.firstChild.checked = checkboxNode.checked;
     }
 }
 
-// stuff that doesn't care about the DOM
+// stuff that doesn't care about the DOM as much
 
 function importFromQuizletHTML() {
     const input = prompt('Paste your Quizlet HTML source code into the box below.', '');

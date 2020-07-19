@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <title>Jisho</title>
-        <meta name="Description" content="Jisho is a tool for generating custom searchable dictionaries for the TI-Nspire CX calculator series." charset="utf-8" >
+        <meta name="Description" content="Jisho is a web-based tool for generating custom searchable dictionaries for the TI-Nspire CX calculator series." charset="utf-8" >
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="index.css" rel="stylesheet" />
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -16,13 +16,13 @@
         <div class="container">
             <article class="markdown-body">
                 <h1 id="jisho">Jisho</h1>
-                <p>Jisho is a web-based tool for generating custom searchable dictionaries for the TI-Nspire CX calculator series. To learn how to use it, just keep scrolling down. If you want to jump right in to making your own dictionary, click <a href="#editor">here</a> to jump to the editor.</p>
-                <video autoplay loop muted width="500" playsinline>
+                <p>Jisho is a web-based tool for generating custom searchable dictionaries for the <a href="https://education.ti.com/en/products/calculators/graphing-calculators/ti-nspire-cx">TI-Nspire CX</a> calculator series. To learn how to use it, just keep scrolling down. If you want to jump right in to making your own dictionary, click <a href="#editor">here</a> to jump to the editor.</p>
+                <video autoplay loop muted playsinline>
                     <source src="assets/demo.webm" type="video/webm">
                     <source src="assets/demo.mp4" type="video/mp4">
                 </video>
                 <h2 id="overview">Overview</h2>
-                <p>Jisho is a great alternative to using the built-in notes or an external PDF viewer for quickly looking up textual information. Since it just produces a standalone .tns file, there’s no need for 3rd party software like Ndless. As long as the calculator’s operating system is 3.6 or higher, Jisho will work on any CX series calculator, including non-CAS, CAS, and CX II models. The minimum required operating system is fairly old, so you’re probably good to go. If you need to <a href="https://www.vernier.com/til/1725">check the version</a> or <a href="https://education.ti.com/en/software/update/ti-nspire-software-update">upgrade to a newer operating system</a>, click the provided links for further instructions.</p>
+                <p>Jisho is a great alternative to using the built-in notes or an external PDF viewer for quickly looking up textual information. Since it just produces a standalone .tns file, there’s no need for 3rd party software like <a href="http://ndless.me/">Ndless</a>. As long as the calculator’s operating system is 3.6 or higher, Jisho will work on any CX series calculator, including non-CAS, CAS, and CX II models. The minimum required operating system is fairly old, so you’re probably good to go. If you need to <a href="https://www.vernier.com/til/1725">check the version</a> or <a href="https://education.ti.com/en/software/update/ti-nspire-software-update">upgrade to a newer operating system</a>, click the provided links for further instructions.</p>
                 <p>There are 2 parts to Jisho: a browser-based dictionary editor and an executable .tns file containing the actual dictionary. The process of making your own dictionaries is pretty straightforward:</p>
                 <ol type="1">
                     <li>Import or type your terms and definitions into the dictionary editor.</li>
@@ -103,9 +103,15 @@
                 <p>To import raw JSON data, click the “Import JSON” button. This will prompt you to paste in the raw JSON you want to use. After you’re done pasting, click “OK” to exit the prompt. If the JSON is successfully parsed, the new terms and definitions will be appended to the table. If there’s an error, you may get an alert, but nothing will happen.</p>
                 <p>The keys of the imported JSON data are treated as the new terms, and the values are treated as the definitions. Note that the values effectively get stringified, so pass in JSON that has strings for values.</p>
                 <h2 id="issues">Issues</h2>
-                <p>If you ever run into any issues, open up an issue at the <a href="https://github.com/nhwn/jisho">repo</a>. As for licensing, this tool is distributed under the <a href="https://opensource.org/licenses/MIT">MIT</a> license, so feel free go ham on the source code.</p>
+                <p>If you ever run into any issues, open up an issue at the <a href="https://github.com/nhwn/jisho">repo</a>. Feedback and comments are welcome! If you like Jisho, consider leaving a star at the GitHub repository. 
+
+                If you want to mess around with the source code, Jisho is distributed under the <a href="https://opensource.org/licenses/MIT">MIT</a> license, so feel free go ham.</p>
+                <p>If you’re concerned about the “cheating” implications of using Jisho for tests like the AP exams, don’t worry about it; as of this writing, the College Board explicitly states that your calculator memory <a href="https://apstudents.collegeboard.org/exam-policies-guidelines/calculator-policies">doesn’t have to be cleared</a> before or after the exam. Plus, it’s not like Jisho is a free ticket to a perfect score. In practice, I find it to be most useful as an emergency crutch for recalling information that I might forget.</p>
+                <p>That being said, I strongly discourage academic dishonesty, so please make sure you use Jisho responsibly.</p>
                 <h2 id="editor">Editor</h2>
-                <p style="margin: 0px;">This is the editor for creating your .tns files. The sky’s the limit!</p>
+                <p style="margin: 0">
+                This is the editor for creating your .tns files. The initial entries are just there as examples, so feel free to delete them. Remember, you can put whatever you want into your dictionary. The sky’s the limit!
+                </p>
                 <div class="button-group minor-group">
                     <button class="button" onclick="downloadTNS()">Download .tns</button>
                     <button class="button" onclick="importFromQuizletHTML()">Import Quizlet</button>
@@ -128,8 +134,70 @@
                             <th>Definition</th>
                         </tr>
                     </thead>
-                    <tbody id="entries">
-                        <tr><td><input type="checkbox"></td><td>1</td><td class="term" contenteditable="true">one</td><td class="definition" contenteditable="true">Romaji: ichi<br>Kanji: 一<br>Symbol: 1</td></tr><tr><td><input type="checkbox"></td><td>2</td><td class="term" contenteditable="true">two</td><td class="definition" contenteditable="true">Romaji: ni<br>Kanji: 二<br>Symbol: 2</td></tr><tr><td><input type="checkbox"></td><td>3</td><td class="term" contenteditable="true">three</td><td class="definition" contenteditable="true">Romaji: san<br>Kanji: 三<br>Symbol: 3</td></tr><tr><td><input type="checkbox"></td><td>4</td><td class="term" contenteditable="true">four</td><td class="definition" contenteditable="true">Romaji: yon<br>Kanji: 四<br>Symbol: 4<br><br>An alternate pronunciation is "shi," but it's considered unlucky.</td></tr><tr><td><input type="checkbox"></td><td>5</td><td class="term" contenteditable="true">five</td><td class="definition" contenteditable="true">Romaji: go<br>Kanji: 五<br>Symbol: 5</td></tr><tr><td><input type="checkbox"></td><td>6</td><td class="term" contenteditable="true">six</td><td class="definition" contenteditable="true">Romaji: roku<br>Kanji: 六<br>Symbol: 6</td></tr><tr><td><input type="checkbox"></td><td>7</td><td class="term" contenteditable="true">seven</td><td class="definition" contenteditable="true">Romaji: nana<br>Kanji: 七<br>Symbol: 7</td></tr><tr><td><input type="checkbox"></td><td>8</td><td class="term" contenteditable="true">eight</td><td class="definition" contenteditable="true">Romaji: hachi<br>Kanji: 八<br>Symbol: 8</td></tr><tr><td><input type="checkbox"></td><td>9</td><td class="term" contenteditable="true">nine</td><td class="definition" contenteditable="true">Romaji: kyuu<br>Kanji: 九<br>Symbol: 9</td></tr><tr><td><input type="checkbox"></td><td>10</td><td class="term" contenteditable="true">ten</td><td class="definition" contenteditable="true">Romaji: jyuu<br>Kanji: 十<br>Symbol: 10</td></tr></tbody>
+                    <tbody id="entries"> 
+                        <tr>
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                            <td>1</td>
+                            <td class="term" contenteditable="true">one</td>
+                            <td class="definition" contenteditable="true">Romaji: ichi<br>Kanji: 一<br>Symbol: 1</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td class="term" contenteditable="true">two</td>
+                            <td class="definition" contenteditable="true">Romaji: ni<br>Kanji: 二<br>Symbol: 2</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td class="term" contenteditable="true">three</td>
+                            <td class="definition" contenteditable="true">Romaji: san<br>Kanji: 三<br>Symbol: 3</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>4</td>
+                            <td class="term" contenteditable="true">four</td>
+                            <td class="definition" contenteditable="true">Romaji: yon<br>Kanji: 四<br>Symbol: 4<br><br>An alternate pronunciation is "shi," but it's considered unlucky.</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>5</td>
+                            <td class="term" contentditable="true">five</td>
+                            <td class="definition" contenteditable="true">Romaji: go<br>Kanji: 五<br>Symbol: 5</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>6</td>
+                            <td class="term" contenteditable="true">six</td>
+                            <td class="definition" contenteditable="true">Romaji: roku<br>Kanji: 六<br>Symbol: 6</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>7</td>
+                            <td class="term" contenteditable="true">seven</td>
+                            <td class="definition" contenteditable="true">Romaji: nana<br>Kanji: 七<br>Symbol: 7</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>8</td>
+                            <td class="term" contenteditable="true">eight</td>
+                            <td class="definition" contenteditable="true">Romaji: hachi<br>Kanji: 八<br>Symbol: 8</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>9</td>
+                            <td class="term" contenteditable="true">nine</td>
+                            <td class="definition" contenteditable="true">Romaji: kyuu<br>Kanji: 九<br>Symbol: 9</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>10</td>
+                            <td class="term" contenteditable="true">ten</td>
+                            <td class="definition" contenteditable="true">Romaji: jyuu<br>Kanji: 十<br>Symbol: 10</td>
+                        </tr>
+                    </tbody>
                 </table>
             </article>
         </div>

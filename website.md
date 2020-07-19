@@ -1,13 +1,13 @@
 # Jisho
-Jisho is a web-based tool for generating custom searchable dictionaries for the TI-Nspire CX calculator series. To learn how to use it, just keep scrolling down. If you want to jump right in to making your own dictionary, click [here](#editor) to jump to the editor.
+Jisho is a web-based tool for generating custom searchable dictionaries for the [TI-Nspire CX](https://education.ti.com/en/products/calculators/graphing-calculators/ti-nspire-cx) calculator series. To learn how to use it, just keep scrolling down. If you want to jump right in to making your own dictionary, click [here](#editor) to jump to the editor.
 
-<video autoplay loop muted width="500" playsinline>
+<video autoplay loop muted playsinline>
     <source src="assets/demo.webm" type="video/webm">
     <source src="assets/demo.mp4" type="video/mp4">
 </video>
 
 ## Overview
-Jisho is a great alternative to using the built-in notes or an external PDF viewer for quickly looking up textual information. Since it just produces a standalone .tns file, there's no need for 3rd party software like Ndless. As long as the calculator's operating system is 3.6 or higher, Jisho will work on any CX series calculator, including non-CAS, CAS, and CX II models. The minimum required operating system is fairly old, so you're probably good to go. If you need to [check the version](https://www.vernier.com/til/1725) or [upgrade to a newer operating system](https://education.ti.com/en/software/update/ti-nspire-software-update), click the provided links for further instructions.
+Jisho is a great alternative to using the built-in notes or an external PDF viewer for quickly looking up textual information. Since it just produces a standalone .tns file, there's no need for 3rd party software like [Ndless](http://ndless.me/). As long as the calculator's operating system is 3.6 or higher, Jisho will work on any CX series calculator, including non-CAS, CAS, and CX II models. The minimum required operating system is fairly old, so you're probably good to go. If you need to [check the version](https://www.vernier.com/til/1725) or [upgrade to a newer operating system](https://education.ti.com/en/software/update/ti-nspire-software-update), click the provided links for further instructions.
 
 There are 2 parts to Jisho: a browser-based dictionary editor and an executable .tns file containing the actual dictionary. The process of making your own dictionaries is pretty straightforward:
 
@@ -97,8 +97,16 @@ The keys of the imported JSON data are treated as the new terms, and the values 
 
 ## Issues
 
-If you ever run into any issues, open up an issue at the [repo](https://github.com/nhwn/jisho). As for licensing, this tool is distributed under the [MIT](https://opensource.org/licenses/MIT) license, so feel free go ham on the source code.
+If you ever run into any issues, open up an issue [here](https://github.com/nhwn/jisho/issues). I'll do my best to answer in a timely manner. Also, feedback and comments are welcome! If you like Jisho, consider leaving a star at the [GitHub repository](https://github.com/nhwn/jisho).
+
+If you want to mess with the source code, Jisho is distributed under the [MIT](https://opensource.org/licenses/MIT) license, so feel free go ham. Implementation details can be found in the repository's README if you're curious. 
+
+If you're concerned about the "cheating" implications of using Jisho for tests like the AP exams, don't worry about it; as of this writing, the College Board explicitly states that your calculator memory [doesn't have to be cleared](https://apstudents.collegeboard.org/exam-policies-guidelines/calculator-policies) before or after the exam. Plus, it's not like Jisho is a free ticket to a perfect score. In practice, I find it to be most useful as an emergency crutch for recalling information that I might forget.
+
+That being said, I strongly discourage academic dishonesty, so please make sure you use Jisho responsibly. 
 
 ## Editor
-This is the editor for creating your .tns files. The sky's the limit!
+<p style="margin: 0">
+This is the editor for creating your .tns files. The initial entries are just there as examples, so feel free to delete them. Remember, you can put whatever you want into your dictionary. The sky's the limit!
+</p>
 
