@@ -49,10 +49,10 @@ If you want to change the search behavior or font size, press the `menu` button 
     - Terms Only - Search only the list of terms to determine matching results.
     - Terms and Defs (default) - Search both the list of terms and definitions to determine matching results. 
 - Font Sizes
-    - 9 (default) - Set the font size to 9.
-    - 12 - Set the font size to 12.
-    - 16 - Set the font size to 16.
-    - 24 - Set the font size to 24.
+    - 9 (default) - Set the font size of results to 9.
+    - 12 - Set the font size of results to 12.
+    - 16 - Set the font size of results to 16.
+    - 24 - Set the font size of results to 24.
 
 ## Using the editor
 

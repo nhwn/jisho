@@ -55,7 +55,7 @@ function readRows() {
 function deleteSelectedRows() {
     // raw loop access in reverse since length changes on removal
     for (let i = rows.length - 1; i >= 0; i--) {
-        if (rows[i].firstChild.firstChild.checked) {
+        if (rows[i].firstElementChild.firstElementChild.checked) {
             rows[i].remove();
         }
     }
@@ -66,9 +66,9 @@ function deleteSelectedRows() {
     toggle.checked = false;
 }
 
-function toggleCheckboxes(checkboxNode) {
+function toggleCheckboxes(node) {
     for (const row of rows) {
-        row.firstChild.firstChild.checked = checkboxNode.checked;
+        row.firstElementChild.firstElementChild.checked = toggle.checked;
     }
 }
 
@@ -132,9 +132,9 @@ function parseQuizletHTML(html) {
     const domparser = new DOMParser();
     const doc = domparser.parseFromString(html, 'text/html');
     const terms = Array.from(doc.querySelectorAll('.SetPageTerm-wordText'))
-        .map(term => htmlToString.convert(term.firstChild.innerHTML));
+        .map(term => htmlToString.convert(term.firstElementChild.innerHTML));
     const definitions = Array.from(doc.querySelectorAll('.SetPageTerm-definitionText'))
-        .map(definition => htmlToString.convert(definition.firstChild.innerHTML));
+        .map(definition => htmlToString.convert(definition.firstElementChild.innerHTML));
     return [terms, definitions];
 }
 
